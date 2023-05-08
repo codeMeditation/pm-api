@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-docker-compose -f devenv/docker-compose.yml -p pm-api down -v
+docker-compose -f /docker-compose.yml -p pm-api down -v
