@@ -1,10 +1,15 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: `env/${process.env.NODE_ENV}.env`,
+    }),
     TypeOrmModule.forRootAsync({
       inject: [],
       useFactory: () => ({
@@ -13,10 +18,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         port: 3306,
         username: 'root',
         password: 'test-password',
-        database: 'pm-api',
+        database: 'pm_api_database',
         entities: [],
         synchronize: true,
-        keepConnectionAlive: process.env.NODE_ENV === 'test' ? true : false,
       }),
     }),
   ],

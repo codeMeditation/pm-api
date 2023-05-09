@@ -3,7 +3,7 @@
 which mysql
 if [ $? -ne 0 ]
 then
-  echo "Please intstall MySQL Client!"
+  echo "Mysql client is not installed. Abort!"
   exit 1
 fi
 
@@ -15,3 +15,5 @@ do
 done
 
 mysql -u"root" -p"test-password" -h"localhost" --protocol=tcp -s < ./setup.sql &> /tmp/setup-local-dev-env
+
+

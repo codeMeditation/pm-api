@@ -8,8 +8,8 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
-    "devenv:start": "./npm-scripts-ext/start-with-local-database.sh",
-    "devenv:stop": "./npm-scripts-ext/stop.sh",
+    "devenv:start": "./npm-scripts-ext/start-dev.sh",
+    "devenv:stop": "./npm-scripts-ext/stop-dev.sh",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "npm run devenv:start && NODE_ENV=development nest start --watch",
@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",
+    "@nestjs/config": "^2.3.1",
     "@nestjs/core": "^9.0.0",
     "@nestjs/platform-express": "^9.0.0",
     "mysql": "^2.18.1",
