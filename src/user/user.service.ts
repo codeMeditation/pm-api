@@ -8,7 +8,8 @@ import { Repository } from 'typeorm';
 import { DbQuery } from '../common/DbQuery';
 import { UserEntity } from './user.entity';
 import { FindAndCountResult } from 'src/common/find-and-count-result';
-import { CreateUpdateDto } from './dto/create-update.dto';
+import { CreateDto } from './dto/create.dto';
+import { UpdateDto } from './dto/update.dto';
 
 @Injectable()
 export class UserService {
@@ -23,37 +24,33 @@ export class UserService {
     );
   }
 
-  public async create(user: CreateUpdateDto): Promise<UserEntity> {
+  public async create(params: CreateDto): Promise<UserEntity> {
     try {
       return await this.repository.save({
-        name: user.name,
+        name: params.name,
+        roles: params.roleIds?.map((id) => ({ id })),
       });
     } catch (error) {
       if (error.message.includes('ER_DUP_ENTRY')) {
         throw new ConflictException(
-          `User with name ${user.name} already exists`,
+          `User with name ${params.name} already exists`,
         );
       }
       throw error;
     }
   }
 
-  public async update(
-    idOrName: string,
-    user: CreateUpdateDto,
-  ): Promise<UserEntity> {
+  public async update(params: UpdateDto): Promise<UserEntity> {
     const existingUser = await this.repository.findOne({
-      where: [{ id: idOrName }, { name: idOrName }],
-      select: ['id', 'name'],
+      where: [{ id: params.id }],
     });
     if (existingUser === null) {
-      throw new NotFoundException(
-        `User with ID or name ${idOrName} cannot be found`,
-      );
+      throw new NotFoundException(`User with ID ${params.id} cannot be found`);
     }
     return await this.repository.save({
       id: existingUser.id,
-      name: user.name,
+      name: params.name,
+      roles: params.roleIds?.map((id) => ({ id })),
     });
   }
 

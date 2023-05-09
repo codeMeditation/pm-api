@@ -15,8 +15,9 @@ import { Response } from 'express';
 import { UserService } from './user.service';
 import { BaseQueryDto } from '../common/base-query.dto';
 import { UserEntity } from './user.entity';
-import { CreateUpdateDto } from './dto/create-update.dto';
+import { CreateDto } from './dto/create.dto';
 import { buildSearchParams } from '@codemeditation/queryhelper';
+import { UpdateDto } from './dto/update.dto';
 
 @Controller('api/users')
 export class UserController {
@@ -36,17 +37,14 @@ export class UserController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  public create(@Body() user: CreateUpdateDto): Promise<UserEntity> {
+  public create(@Body() user: CreateDto): Promise<UserEntity> {
     return this.service.create(user);
   }
 
-  @Put(':idOrName')
+  @Put()
   @HttpCode(HttpStatus.ACCEPTED)
-  public update(
-    @Param('idOrName') idOrName: string,
-    @Body() user: CreateUpdateDto,
-  ): Promise<UserEntity> {
-    return this.service.update(idOrName, user);
+  public update(@Body() params: UpdateDto): Promise<UserEntity> {
+    return this.service.update(params);
   }
 
   @Delete(':idOrName')
